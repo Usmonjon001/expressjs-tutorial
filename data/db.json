@@ -1,0 +1,29 @@
+{
+    "uznews": [
+        {
+            "title": "test 1",
+            "description": "ada hj jasdh jash jasdjd hjsah j ",
+            "date": "Wed Jun 21 2023 18:58:40 GMT+0500 (Uzbekistan Standard Time)",
+            "id": 7188576,
+            "img_url": "http://127.0.0.1:3000/images/16873559200931.jpeg"
+        },
+        {
+            "title": "test 2 Updated",
+            "description": "ada hj jasdh jash jasdjd hjsah j ",
+            "date": "Wed Jun 21 2023 17:35:00 GMT+0500 (Uzbekistan Standard Time)",
+            "id": "8977777",
+            "img_url": "http://127.0.0.1:3000/images/168735597090342wolfsburg.jpeg"
+        },
+        {
+            "title": "test 3",
+            "description": "ada hj jasdh jash jasdjd hjsah j ",
+            "date": "Wed Jun 21 2023 18:58:46 GMT+0500 (Uzbekistan Standard Time)",
+            "id": 7483371,
+            "img_url": "http://127.0.0.1:3000/images/16873559261591.jpeg"
+        }
+    ],
+    "world": [],
+    "sport": [],
+    "tech": [],
+    "about": []
+}
