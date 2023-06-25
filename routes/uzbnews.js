@@ -2,7 +2,11 @@ const { Router } = require('express');
 const fs = require('fs');
 const multer = require('multer');
 
-let route = Router()
+// Lesson Plan
+// query?title=""& 
+// app.use('api/v1/uzbnews')
+// Request Check
+let router = Router()
 
 // Data
 const data = fs.readFileSync('./data/db.json', 'utf-8');
@@ -19,8 +23,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage})
 
-
-route.get('/api/uzbnews', 
+// Postlarni Olish
+router.get('/', 
     (req, res, next) => {
        const { whoami } = req.body;
        if(whoami == 'user'){
@@ -34,48 +38,15 @@ route.get('/api/uzbnews',
     }
 )
 
-
-route.post('/api/uzbnews', upload.single('photo'), (req, res) =>{
-    console.log(req.file);
-    req.body.id = Math.floor(Math.random() * 10000000);
-    req.body.date = Date();
-    req.body.img_url = 'http://127.0.0.1:3000/images/'+req.file.filename;
-    dataObject.uznews.push(req.body)
-    let status = fs.writeFileSync('./data/db.json', JSON.stringify(dataObject, null, 4), (err, data) => err);
-    if(status == undefined){
-        res.send(201, {
-            status: 'ok',
-            msg: "Post Muafaqqiyatli qo'yildi"
-        })
-    }
+// Malumotlarni Qidirish
+router.get('/search', (req, res) => {
+    let { title } = req.query;
+    let filtereddata = dataObject.uznews.filter(el => el.title.toLowerCase().includes(title));
+    res.send(JSON.stringify(filtereddata, null, 4))
 })
 
-
-route.delete('/api/uzbnews/:id', (req, res) =>{
-    let { id } = req.params;
-    dataObject.uznews = dataObject.uznews.filter(el => {
-        
-        
-        // console.log(img[img.length - 1]);
-        
-        if(el.id == id) {
-            let img = el.img_url.split('/')
-            let removeImg = fs.unlinkSync(`./uploads/${img[img.length - 1]}`);
-        }
-
-        return el.id != id
-    });
-    
-    let status = fs.writeFileSync('./data/db.json', JSON.stringify(dataObject, null, 4), (err, data) => err);
-    if(status == undefined){
-        res.status(200).json({
-            status: 'ok',
-            msg: "Post Muafaqqiyatli o'chirildi"
-        })
-    }
-})
-
-route.put('/api/uzbnews/:id', upload.single('photo'), (req, res) =>{
+// Postni Yangilash
+router.put('/:id', upload.single('photo'), (req, res) =>{
     let { id } = req.params;
     console.log(req.body, id);
     console.log(req.file.filename);
@@ -105,5 +76,48 @@ route.put('/api/uzbnews/:id', upload.single('photo'), (req, res) =>{
     // console.log(dataObject.uznews);
 })
 
+// Yangi Post Yaratish
+router.post('/', upload.single('photo'), (req, res) =>{
+    console.log(req.file);
+    req.body.id = Math.floor(Math.random() * 10000000);
+    req.body.date = Date();
+    req.body.img_url = 'http://127.0.0.1:3000/images/'+req.file.filename;
+    dataObject.uznews.push(req.body)
+    let status = fs.writeFileSync('./data/db.json', JSON.stringify(dataObject, null, 4), (err, data) => err);
+    if(status == undefined){
+        res.send(201, {
+            status: 'ok',
+            msg: "Post Muafaqqiyatli qo'yildi"
+        })
+    }
+})
 
-module.exports = route;
+// Postni Ochirish
+router.delete('/:id', (req, res) =>{
+    let { id } = req.params;
+    dataObject.uznews = dataObject.uznews.filter(el => {
+        
+        
+        // console.log(img[img.length - 1]);
+        
+        if(el.id == id) {
+            let img = el.img_url.split('/')
+            let removeImg = fs.unlinkSync(`./uploads/${img[img.length - 1]}`);
+        }
+
+        return el.id != id
+    });
+    
+    let status = fs.writeFileSync('./data/db.json', JSON.stringify(dataObject, null, 4), (err, data) => err);
+    if(status == undefined){
+        res.status(200).json({
+            status: 'ok',
+            msg: "Post Muafaqqiyatli o'chirildi"
+        })
+    }
+})
+
+
+
+
+module.exports = router;

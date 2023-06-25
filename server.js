@@ -24,7 +24,7 @@ app.use(cors())
 app.use('/images', express.static('uploads'))
 
 // Routes
-app.use(uzbnews)
+app.use('/api/v1/uzbnews', uzbnews)
 
 const PORT = 3000;
 
