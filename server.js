@@ -2,11 +2,17 @@ const express = require('express');
 const fs = require('fs');
 const cors = require('cors');
 const session = require('express-session');
+const passport = require('passport');
+
 
 let cookieParser = require('cookie-parser');
 require('./data')
 
-
+// Passport JS Steps
+// npm i passport
+// npm i passport-local
+// passport.initilazie()
+// passport.session()
 
 // Routes
 const uzbnews = require('./routes/uzbnews');
@@ -34,6 +40,8 @@ app.use(session({
 }))
 
 // Routes
+app.use(passport.initialize());
+app.use(passport.session());
 app.use('/api/v1/auth', auth)
 app.use('/api/v1/uzbnews', uzbnews)
 
