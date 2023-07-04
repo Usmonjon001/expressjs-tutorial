@@ -2,10 +2,6 @@ const { Router } = require('express');
 const fs = require('fs');
 const multer = require('multer');
 
-// Lesson Plan
-// query?title=""& 
-// app.use('api/v1/uzbnews')
-// Request Check
 let router = Router()
 
 // Data
@@ -34,7 +30,17 @@ router.get('/',
        return res.sendStatus(401)
     },
     (req, res) =>{
-        res.send(JSON.stringify(dataObject.uznews, null, 4))
+        console.log(req.cookies);
+
+        const { whoami } = req.cookies;
+        if(whoami == 'user'){
+            return res.send(JSON.stringify(dataObject.uznews, null, 4))
+        }
+
+        res.cookie('whoami', 'user', { maxAge: 15000 })
+        return res.send({
+            msg: "Sizning Saytga Birinchi Marta kirishingiz!"
+        })        
     }
 )
 
@@ -63,11 +69,8 @@ router.put('/:id', upload.single('photo'), (req, res) =>{
           }
           return el
     })
-
     console.log(newdata);
-
     dataObject.uznews = newdata;
-
     let status = fs.writeFileSync('./data/db.json', JSON.stringify(dataObject, null, 4), (err, data) => err);
     res.status(200).json({
         status: 'ok',
@@ -118,6 +121,19 @@ router.delete('/:id', (req, res) =>{
 })
 
 
-
+router.post('/test/', (req, res) => {
+    const { title, text } = req.body;
+    const carditem = { title, text };
+    console.log(carditem);
+    const { card } = req.session;
+    if(card){
+        req.session.card.push(carditem)
+        return res.send(req.session.card)
+    } else {
+        req.session.card = [carditem];
+    }
+    console.log(req.sessionID);
+    res.send(201);
+})
 
 module.exports = router;

@@ -1,3 +1,24 @@
 {
-    "users": []
+    "users": [
+        {
+            "username": "Usmonjon",
+            "password": "Hello@2222"
+        },
+        {
+            "username": "Usmonjon1",
+            "password": "Hello@2222"
+        },
+        {
+            "username": "Usmonjon2",
+            "password": "Hello@2222"
+        },
+        {
+            "username": "Usmonjon3",
+            "password": "Hello@2222"
+        },
+        {
+            "username": "Usmonjon4",
+            "password": "Hello@2222"
+        }
+    ]
 }
